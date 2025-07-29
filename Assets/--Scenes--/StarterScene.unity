@@ -5087,6 +5087,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7d9cab770188f349a604bdbf71587f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  move: {fileID: 0}
+  anim: {fileID: 0}
   ghostsParent: {fileID: 234361389}
   trailColor: {r: 1, g: 0.36320752, b: 0.60256857, a: 1}
   fadeColor: {r: 1, g: 0.36320752, b: 0.60256857, a: 0}
@@ -10006,7 +10008,7 @@ GameObject:
   - component: {fileID: 443073846}
   - component: {fileID: 443073845}
   m_Layer: 0
-  m_Name: Grid_Front
+  m_Name: Grid_Front Details
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10083,7 +10085,6 @@ ParticleSystemRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -29812,7 +29813,7 @@ GameObject:
   - component: {fileID: 815702834}
   - component: {fileID: 815702833}
   m_Layer: 0
-  m_Name: GridBack
+  m_Name: Grid_Back
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -29857,7 +29858,7 @@ GameObject:
   - component: {fileID: 1059521545}
   - component: {fileID: 1059521544}
   m_Layer: 8
-  m_Name: Grid
+  m_Name: Grid_Collision
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -30729,10 +30730,10 @@ SpriteRenderer:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 447431736}
+  - {fileID: 213030896}
   - {fileID: 519420032}
   - {fileID: 234361389}
-  - {fileID: 213030896}
-  - {fileID: 1059521545}
   - {fileID: 815702834}
+  - {fileID: 1059521545}
   - {fileID: 443073846}
+  - {fileID: 447431736}
