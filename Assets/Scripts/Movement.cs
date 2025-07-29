@@ -277,6 +277,14 @@ public class Movement : MonoBehaviour
         }
     }
 
+    
+    // NOTE: Much better jump code can be derived from watching Math for Game Programmers: Building a Better Jump
+    // https://www.youtube.com/watch?v=hG9SzQxaCm8&t=9m35s & https://www.youtube.com/watch?v=hG9SzQxaCm8&t=784s
+    // Th = Xh/Vx     V0 = 2H / Th     G = -2H / (Th * Th)     V0 = 2HVx / Xh     G = -2H(Vx*Vx) / (Xh*Xh) 
+    // This allows you to specifically set the max jump height and distance. I haven't had a chance to implement
+    // it in this project yet, but if you have questions, I'm happy to share my implementation for a different project.
+    //   – Jeremy @GameProfBond
+    
     private void Jump(Vector2 dir, bool wall)
     {
         slideParticle.transform.parent.localScale = new Vector3(ParticleSide(), 1, 1);
