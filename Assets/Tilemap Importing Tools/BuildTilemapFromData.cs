@@ -6,6 +6,16 @@ using UnityEngine.Tilemaps;  // We need this to make Tiles & Tilemaps work
 public class BuildTilemapFromData : MonoBehaviour {
     static public Tile[] VISUAL_TILES;
 
+    public InfoProperty info = new InfoProperty( "Using Build Tilemap From Data",
+        "1. Click the <b>Get Instructions from Project Brief</b> button below.\n\n" +
+        "2. In that document, scroll down to the <b>Importing a Classic Level Image to Unity TileMap System</b> section.\n\n");
+
+	
+    [NaughtyAttributes.Button( "Get Instructions from Project Brief" )]
+    void GetInstructions() {
+        Application.OpenURL( ParseMapImageToData.PROJECT_BRIEF_URL );
+    }
+    
     [NaughtyAttributes.Button("Fill Tilemap from Map Data Text")]
     void FillTileMap() {
         MapInfo.LoadMap( mapDataText.text );

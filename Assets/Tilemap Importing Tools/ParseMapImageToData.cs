@@ -4,15 +4,19 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
 
+#if UNITY_EDITOR
 public class ParseMapImageToData : MonoBehaviour {
 
-	public InfoProperty info = new InfoProperty( "Using ParseMapImageToData",
-		"1. <b>target</b> should be set to your main player character (or whatever you want the camera to follow).\n\n" +
-		"2. <b>camBoundsParent</b> is an empty GameObject with several BoxCollider2Ds on it or in children beneath it.\n\n" +
-		"3. Whenever the target is within one of the BoxCollider2Ds, the camera will move only within that Collider.\n\n" +
-		"4. <b>deadZoneSize</b> determines how far from the middle of the screen the target must move for the " +
-		"camera to track it. [0.5f,0.5f] means that the camera will not move until the player exits the middle 50% " +
-		"of the screen.");
+	public InfoProperty info = new InfoProperty( "Using Parse Map Image To Data",
+		"1. Click the <b>Get Instructions from Project Brief</b> button below.\n\n" +
+		"2. In that document, scroll down to the <b>Importing a Classic Level Image to Unity TileMap System</b> section.\n\n");
+
+	
+	public const string PROJECT_BRIEF_URL = "https://tinyurl.com/prod121-celeste-remix";
+	[NaughtyAttributes.Button( "Get Instructions from Project Brief" )]
+	void GetInstructions() {
+		Application.OpenURL( PROJECT_BRIEF_URL );
+	}
 	
 	[NaughtyAttributes.Button("Parse Map Image")]
 	void Parse() {
@@ -225,3 +229,4 @@ public class ParseMapImageToData : MonoBehaviour {
 	
 	
 }
+#endif

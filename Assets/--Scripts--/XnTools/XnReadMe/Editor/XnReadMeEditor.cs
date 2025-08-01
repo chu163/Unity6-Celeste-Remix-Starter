@@ -17,7 +17,7 @@ namespace XnTools {
 	[CustomEditor( typeof(XnReadMe_SO) )]
 	[InitializeOnLoad]
 	public class XnReadMeEditor : Editor {
-		private const string ProjectMenuHeader     = "Help/MI 231 - ";
+		private const string ProjectMenuHeader     = "Tools/PROD121/";
 		private const string UnityWindowLayoutPath = "--Scripts--/XnTools/UnityWindowLayout.wlt";
 
 		static         string kShowedProjectInfoSessionStateName = "ProjectInfoEditor.showedProjectInfo";
@@ -40,19 +40,47 @@ namespace XnTools {
 			}
 		}
 
-		[MenuItem( ProjectMenuHeader + "Load IGDPD4e Window Layout", false, 2)]
-		static void LoadBestWindowLayout() {
-			var assembly = typeof( EditorApplication ).Assembly;
-			var windowLayoutType = assembly.GetType( "UnityEditor.WindowLayout", true );
-			// var method = windowLayoutType.GetMethod( "LoadWindowLayout", BindingFlags.Public | BindingFlags.Static );
-			var method = windowLayoutType.GetMethod("LoadWindowLayout",
-				BindingFlags.Public | BindingFlags.Static,
-				null, new Type[] { typeof(string), typeof(bool) }, null);
-			// Assets/--Scripts--/XnTools/UnityWindowLayout.wlt
-			method?.Invoke( null, new object[] { Path.Combine( Application.dataPath, UnityWindowLayoutPath ), false } );
+		public const string PROJECT_BRIEF_URL = "https://tinyurl.com/prod121-celeste-remix";
+		[MenuItem( ProjectMenuHeader + "Open Celeste Starter Kit Instructions in Browser", false, 2)]
+		static void OpenProjectBrief() {
+			Application.OpenURL( PROJECT_BRIEF_URL );
 		}
 
-		[MenuItem( ProjectMenuHeader + "Show Project ReadMe", false, 1 )]
+		[MenuItem( ProjectMenuHeader + "Load PROD121 Window Layout", false, 100)]
+		[MenuItem( "Window/—Load PROD121 Window Layout—", false, 10)]
+		static void LoadBestWindowLayout() {
+			string path = Path.Combine( Application.dataPath, UnityWindowLayoutPath );
+			
+			// This is the way it was done in Unity 2022
+			// var assembly = typeof( EditorApplication ).Assembly;
+			// var windowLayoutType = assembly.GetType( "UnityEditor.WindowLayout", true );
+			// // var method = windowLayoutType.GetMethod( "LoadWindowLayout", BindingFlags.Public | BindingFlags.Static );
+			// var method = windowLayoutType.GetMethod("LoadWindowLayout",
+			// 	BindingFlags.Public | BindingFlags.Static,
+			// 	null, new Type[] { typeof(string), typeof(UnityEditor.WindowLayout.LoadWindowLayoutFlags) }, null);
+			// // Assets/--Scripts--/XnTools/UnityWindowLayout.wlt
+			// method?.Invoke( null, new object[] { path, false } );
+
+			// This appears to be how it's done in Unity 6. MUCH simpler.
+			// This method will return false if unsuccessful, but I don't need the result. - JGB 2025-08-01 
+			EditorUtility.LoadWindowLayout( path );
+		}
+
+		// This is the example that I pulled from: com.unity.learn.iet-framework TutorialModel.cs - JGB 2025-08-01
+		// internal static bool LoadWindowLayout(string path)
+		// {
+		// 	TutorialWindow.s_IsLoadingLayout = true;
+		// 	OnBeforeLayoutLoaded?.Invoke();
+		// 	/* the following instruction will cause a layout reload, which will cause the tutorial window to be closed and reopened.
+		// 	 During the process, there will be a moment where two different instances of the Tutorial Window will be operating at the same time.
+		// 	This makes the Cache state unreliable during this method, hence the static flag for checking if the layout is reloading */
+		// 	bool successful = EditorUtility.LoadWindowLayout(path); // will log an error if fails
+		// 	TutorialWindow.s_IsLoadingLayout = false;
+		// 	OnLayoutLoaded?.Invoke(successful);
+		// 	return successful;
+		// }
+
+		[MenuItem( ProjectMenuHeader + "Show Editable Project ReadMe", false, 1 )]
 		static XnReadMe_SO SelectProjectInfo() {
 			var ids = AssetDatabase.FindAssets( "t:XnReadMe_SO" );
 			if ( ids.Length == 1 ) {
