@@ -32,10 +32,10 @@ public class Collision : MonoBehaviour
     public Vector2 bottomOffset, rightOffset, leftOffset;
     private Color debugCollisionColor = Color.red;
 
+    internal CapsuleCollider2D capsule;
     // Start is called before the first frame update
-    void Start()
-    {
-        
+    void Start() {
+        capsule = GetComponent<CapsuleCollider2D>();
     }
 
     // Update is called once per frame

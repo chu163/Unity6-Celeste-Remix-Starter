@@ -14,25 +14,29 @@ public class Movement : MonoBehaviour
     [Space]
     [Header("Stats")]
     public float speed = 10;
-    public float jumpForce = 50;
-    public float slideSpeed = 5;
+    public float jumpForce    = 50;
+    public float slideSpeed   = 5;
     public float wallJumpLerp = 10;
-    public float dashSpeed = 20;
+    public float dashSpeed    = 20;
+    public float mantleTime   = 0.05f;
 
     [Space]
     [Header("Booleans")]
-    public bool canMove;
-    public bool wallGrab;
-    public bool wallJumped;
-    public bool wallSlide;
-    public bool isDashing;
+    [XnTools.ReadOnly] public bool canMove;
+    [XnTools.ReadOnly] public bool wallGrab;
+    [XnTools.ReadOnly] public bool wallJumped;
+    [XnTools.ReadOnly] public bool wallSlide;
+    [XnTools.ReadOnly] public bool isDashing;
+    [XnTools.ReadOnly] public bool isMantling; // JGB 2025-08-03
+
+    private Vector2 _mantlingVel;
 
     [Space]
 
     private bool groundTouch;
     private bool hasDashed;
 
-    public int side = 1;
+    [XnTools.ReadOnly] public int side = 1;
 
     [Space]
     [Header("Polish")]
@@ -47,10 +51,34 @@ public class Movement : MonoBehaviour
         coll = GetComponent<Collision>();
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponentInChildren<AnimationScript>();
+        isMantling = false;
     }
 
-    // Update is called once per frame
-    void Update()
+    
+    /// <summary>
+    /// Update is called once per frame
+    /// The original code had everything in Update, but that doesn't work well with the Physics system
+    ///  because physics runs on FixedUpdate(). 
+    /// However, Input functions like GetButtonUp() and GetButtonDown() ONLY work in Update() and not FixedUpdate().
+    /// So I am caching their values and then consuming those values in FixedUpdate(), which solves the problem.
+    ///   - JGB 2025-08-03
+    /// </summary>
+    void Update() {
+        if ( Input.GetButtonDown( "Fire1" ) ) _fire1Down = true;
+        if ( Input.GetButtonUp( "Fire3" ) ) _fire3Up = true;
+        if ( Input.GetButtonDown( "Jump" ) ) _jumpDown = true;
+    }
+
+    private bool _fire3Up, _jumpDown, _fire1Down;
+
+    
+    /// <summary>
+    /// FixedUpdate is called every time the Physics system updates (50x/second by default).
+    /// Input.GetButton and GetAxis work fine in FixedUpdate, but GetButtonDown, GetButtonUp, and other Input.…Up
+    ///  and Input.…Down calls do NOT work in FixedUpdate(), so I'm caching them in Update() (see above).
+    ///    - JGB 2025-08-03
+    /// </summary>
+    void FixedUpdate()
     {
         float x = Input.GetAxis("Horizontal");
         float y = Input.GetAxis("Vertical");
@@ -61,16 +89,19 @@ public class Movement : MonoBehaviour
         Walk(dir);
         anim.SetHorizontalMovement(x, y, rb.linearVelocity.y);
 
+        bool wasWallGrabbing = wallGrab; // Used for mantling over walls we've climbed. - JGB
+
         if (coll.onWall && Input.GetButton("Fire3") && canMove)
         {
-            if(side != coll.wallSide)
-                anim.Flip(side*-1);
+            if(side != coll.wallSide) anim.Flip(side*-1);
             wallGrab = true;
             wallSlide = false;
         }
 
-        if (Input.GetButtonUp("Fire3") || !coll.onWall || !canMove)
+        // if (Input.GetButtonUp("Fire3") || !coll.onWall || !canMove)
+        if (_fire3Up || !coll.onWall || !canMove)
         {
+            _fire3Up = false; // We used the value, so we need to set it back to false - JGB
             wallGrab = false;
             wallSlide = false;
         }
@@ -84,8 +115,9 @@ public class Movement : MonoBehaviour
         if (wallGrab && !isDashing)
         {
             rb.gravityScale = 0;
-            if(x > .2f || x < -.2f)
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0);
+            if(x > .2f || x < -.2f) {
+                rb.linearVelocity = new Vector2( rb.linearVelocity.x, 0 );
+            }
 
             float speedModifier = y > 0 ? .5f : 1;
 
@@ -108,8 +140,10 @@ public class Movement : MonoBehaviour
         if (!coll.onWall || coll.onGround)
             wallSlide = false;
 
-        if (Input.GetButtonDown("Jump"))
+        // if (Input.GetButtonDown("Jump"))
+        if (_jumpDown)
         {
+            _jumpDown = false; // We used the value, so we need to set it back to false - JGB
             anim.SetTrigger("jump");
 
             if (coll.onGround)
@@ -118,8 +152,10 @@ public class Movement : MonoBehaviour
                 WallJump();
         }
 
-        if (Input.GetButtonDown("Fire1") && !hasDashed)
+        // if (Input.GetButtonDown("Fire1") && !hasDashed)
+        if (_fire1Down && !hasDashed)
         {
+            _fire1Down = false; // We used the value, so we need to set it back to false - JGB
             if(xRaw != 0 || yRaw != 0)
                 Dash(xRaw, yRaw);
         }
@@ -136,10 +172,33 @@ public class Movement : MonoBehaviour
         }
 
         WallParticle(y);
+        
+        if ( isMantling ) {
+            rb.linearVelocity = _mantlingVel;
+            return; // While mantling, don't do anything else.
+        }
 
         if (wallGrab || wallSlide || !canMove)
             return;
 
+        // Mantle walls that we've climbed to the top - JGB 2025-08-03
+        if ( wasWallGrabbing && !wallGrab && !coll.onGround ) {
+            // We were climbing a wall, but now we're at the top (hopefully)
+            // side should be facing toward where the wall was
+            Vector2 capsuleCenter = coll.capsule.bounds.center;
+            float capsuleHalfWidth = coll.capsule.size.x * 0.5f;
+            RaycastHit2D hit2D = Physics2D.Raycast( capsuleCenter, Vector2.right * side, capsuleHalfWidth * 1.2f, coll.groundLayer ); 
+            if ( hit2D.collider == null ) {
+                // Nothing was hit, so give a boost in that direction
+                _mantlingVel = new Vector2( speed * side, speed );
+                rb.linearVelocity = _mantlingVel;
+                isMantling = true;
+                anim.Flip(side);
+                StartCoroutine( MantleDelay() );
+                Debug.Log( "Tried to mantle" );
+            }
+        }
+        
         if(x > 0)
         {
             side = 1;
@@ -150,7 +209,6 @@ public class Movement : MonoBehaviour
             side = -1;
             anim.Flip(side);
         }
-
 
     }
 
@@ -223,6 +281,11 @@ public class Movement : MonoBehaviour
         yield return new WaitForSeconds(.15f);
         if (coll.onGround)
             hasDashed = false;
+    }
+
+    IEnumerator MantleDelay() {
+        yield return new WaitForSeconds( mantleTime );
+        isMantling = false;
     }
 
     private void WallJump()

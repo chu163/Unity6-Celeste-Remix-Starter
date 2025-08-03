@@ -18251,6 +18251,10 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 519420031}
+    - target: {fileID: 7306759984448506454, guid: 424e7dcf651e14ff3b3a7fa59b078f58, type: 3}
+      propertyPath: makeSpeechSound
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

@@ -14716,11 +14716,13 @@ MonoBehaviour:
   slideSpeed: 1
   wallJumpLerp: 5
   dashSpeed: 50
+  mantleTime: 0.05
   canMove: 1
   wallGrab: 0
   wallJumped: 0
   wallSlide: 0
   isDashing: 0
+  isMantling: 0
   side: 1
   dashParticle: {fileID: 2536931149643490421}
   jumpParticle: {fileID: 2840574637282082578}
