@@ -188,6 +188,8 @@ public class Movement : MonoBehaviour
 
         rb.linearVelocity += dir.normalized * dashSpeed;
         StartCoroutine(DashWait());
+        
+        SoundAndMusic.Play( eAudioTrigger.dash );
     }
 
     static private GhostTrail _GHOST_TRAIL;
@@ -244,16 +246,12 @@ public class Movement : MonoBehaviour
     private void WallSlide()
     {
         if(coll.wallSide != side)
-         anim.Flip(side * -1);
+            anim.Flip(side * -1);
 
         if (!canMove)
             return;
 
-        bool pushingWall = false;
-        if((rb.linearVelocity.x > 0 && coll.onRightWall) || (rb.linearVelocity.x < 0 && coll.onLeftWall))
-        {
-            pushingWall = true;
-        }
+        bool pushingWall = (rb.linearVelocity.x > 0 && coll.onRightWall) || (rb.linearVelocity.x < 0 && coll.onLeftWall);
         float push = pushingWall ? 0 : rb.linearVelocity.x;
 
         rb.linearVelocity = new Vector2(push, -slideSpeed);
@@ -278,15 +276,16 @@ public class Movement : MonoBehaviour
     }
 
     
-    // NOTE: Much better jump code can be derived from watching Math for Game Programmers: Building a Better Jump
-    // https://www.youtube.com/watch?v=hG9SzQxaCm8&t=9m35s & https://www.youtube.com/watch?v=hG9SzQxaCm8&t=784s
-    // Th = Xh/Vx     V0 = 2H / Th     G = -2H / (Th * Th)     V0 = 2HVx / Xh     G = -2H(Vx*Vx) / (Xh*Xh) 
-    // This allows you to specifically set the max jump height and distance. I haven't had a chance to implement
-    // it in this project yet, but if you have questions, I'm happy to share my implementation for a different project.
-    //   – Jeremy @GameProfBond
     
     private void Jump(Vector2 dir, bool wall)
     {
+        // NOTE: Much better jump code can be derived from watching Math for Game Programmers: Building a Better Jump
+        // https://www.youtube.com/watch?v=hG9SzQxaCm8&t=9m35s & https://www.youtube.com/watch?v=hG9SzQxaCm8&t=784s
+        // Th = Xh/Vx     V0 = 2H / Th     G = -2H / (Th * Th)     V0 = 2HVx / Xh     G = -2H(Vx*Vx) / (Xh*Xh) 
+        // This allows you to specifically set the max jump height and distance. I haven't had a chance to implement
+        // it in this project yet, but if you have questions, I'm happy to share my implementation for a different project.
+        //   – Jeremy @GameProfBond
+        
         slideParticle.transform.parent.localScale = new Vector3(ParticleSide(), 1, 1);
         ParticleSystem particle = wall ? wallJumpParticle : jumpParticle;
 
@@ -294,6 +293,8 @@ public class Movement : MonoBehaviour
         rb.linearVelocity += dir * jumpForce;
 
         particle.Play();
+        
+        SoundAndMusic.Play( eAudioTrigger.jump );
     }
 
     IEnumerator DisableMovement(float time)

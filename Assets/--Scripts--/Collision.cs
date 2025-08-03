@@ -2,6 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// I made some improvements to this to have it work better with the physics system.
+// The original version was using Update() instead of FixedUpdate(), which doesn't
+//  really make any sense (because the physics only update once per FixedUpdate()).
+//  -- JGB 2025-08-03
+
+[DefaultExecutionOrder(-100)] // This makes Collision.FixedUpdate happen before Movement.FixedUpdate();
 public class Collision : MonoBehaviour
 {
 
@@ -14,7 +20,9 @@ public class Collision : MonoBehaviour
     public bool onWall;
     public bool onRightWall;
     public bool onLeftWall;
-    public int wallSide;
+    public int  wallSide;
+    public bool jumpedThisFrame;
+    public bool landedThisFrame;
 
     [Space]
 
@@ -31,9 +39,18 @@ public class Collision : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {  
+    // void Update()
+    void FixedUpdate() { // FixedUpdate is called every time the physics updates, which is 50x/second - JGB 2025-08-03
+        bool wasOnGround = onGround;
         onGround = Physics2D.OverlapCircle((Vector2)transform.position + bottomOffset, collisionRadius, groundLayer);
+        
+        landedThisFrame = !wasOnGround && onGround;
+        if ( landedThisFrame ) SoundAndMusic.Play( eAudioTrigger.land );
+        
+        jumpedThisFrame = wasOnGround && !onGround;
+        // The following line is NOT called here, because it would play a jump every time you walked off a ledge. - JGB
+        // if ( jumpedThisFrame ) SoundAndMusic.Play( SoundAndMusic.eAudioTrigger.jump );
+        
         onWall = Physics2D.OverlapCircle((Vector2)transform.position + rightOffset, collisionRadius, groundLayer) 
             || Physics2D.OverlapCircle((Vector2)transform.position + leftOffset, collisionRadius, groundLayer);
 

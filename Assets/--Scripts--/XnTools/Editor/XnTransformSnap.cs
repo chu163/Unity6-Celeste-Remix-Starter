@@ -8,7 +8,7 @@ namespace XnTools {
     public class XnTransformSnap : MonoBehaviour {
 
         /// <summary>
-        /// Adds an "Edit..." item to the context menu for InfoComponent
+        /// Snaps the GameObject.transform to the grid.
         /// </summary>
         /// <param name="command"></param>
         [MenuItem("CONTEXT/Transform/Snap to Grid Pos", false, Int32.MaxValue)]
