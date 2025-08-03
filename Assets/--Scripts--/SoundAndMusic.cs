@@ -52,16 +52,6 @@ public class SoundAndMusic : MonoBehaviour {
         }
     }
 
-    void Reset() {
-        // Do not make any changes to audioPlayables.
-        info = new InfoProperty( "Using the SoundAndMusic Component",
-            "1. Add any audio clips you want to the Project's \"Sounds and Music\" folder as .wav, .mp3, or .ogg files.\n" +
-            "2. Open <b>Audio Playables</b> below to add them to the game.\n" +
-            "3. If you wish to make any more audio triggers, you need to add them to the eAudioTrigger enum declaration at the top of the SoundAndMusic.cs script.\n" +
-            "4. On each Audio Playable, check <b>Show Extra Options</b> to set volume, pitch, looping, etc.\n\t<i>Note: The options still work, even if they are not shown in the Inspector.</i>\n" +
-            "5. For examples of how to call SoundAndMusic.Play() in code, search for it in the Movement.cs and Collision.cs scripts.\n\n");
-    }
-
     void BuildPlayablesDict() {
         PlayablesDict = new Dictionary<eAudioTrigger, AudioPlayable>();
         foreach (AudioPlayable ap in audioPlayables)

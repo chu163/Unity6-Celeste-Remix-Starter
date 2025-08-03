@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 9115430995513022096}
   - component: {fileID: 5261404977722112725}
   - component: {fileID: 487119364908583205}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: SlideParticle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4856,7 +4856,7 @@ GameObject:
   - component: {fileID: 580484262435530073}
   - component: {fileID: 7338326945629771869}
   - component: {fileID: 7880847813629252555}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: JumpParticle (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9759,7 +9759,7 @@ GameObject:
   - component: {fileID: 1846894227089513739}
   - component: {fileID: 2536931149643490421}
   - component: {fileID: 7550437406914812230}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: DashParticle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14607,9 +14607,9 @@ GameObject:
   - component: {fileID: 527176895868026773}
   - component: {fileID: 5171726326558107328}
   - component: {fileID: 7646108616408205447}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: -Player-
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -14777,7 +14777,7 @@ GameObject:
   - component: {fileID: 9090671057154411267}
   - component: {fileID: 2840574637282082578}
   - component: {fileID: 2293809245499685553}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: JumpParticle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19681,7 +19681,7 @@ GameObject:
   - component: {fileID: 3225292949103509808}
   - component: {fileID: 6651642317157065933}
   - component: {fileID: 4014593709429219058}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Visual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19802,7 +19802,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1184798762668947199}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: SlideParticleParent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19834,6 +19834,42 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 995999271666102509}
     m_Modifications:
+    - target: {fileID: -5291579620253026808, guid: 8f5109b735d9c4ca58d16ff17d9c6715, type: 3}
+      propertyPath: info.text
+      value: "1. Add any audio clips you want to the Project's \"Sounds and Music\"
+        folder as .wav, .mp3, or .ogg files.\n2. Open <b>Audio Playables</b> below
+        to add them to the game.\n3. If you wish to make any more audio triggers,
+        you need to add them to the eAudioTrigger enum declaration at the top of
+        the SoundAndMusic.cs script.\n4. On each Audio Playable, check <b>Show Extra
+        Options</b> to set volume, pitch, looping, etc.\n\t<i>Note: The options still
+        work, even if they are not shown in the Inspector.</i>\n5. For examples of
+        how to call SoundAndMusic.Play() in code, search for it in the Movement.cs
+        and Collision.cs scripts.\n\n"
+      objectReference: {fileID: 0}
+    - target: {fileID: -5291579620253026808, guid: 8f5109b735d9c4ca58d16ff17d9c6715, type: 3}
+      propertyPath: audioPlayables.Array.data[2].name
+      value: Land
+      objectReference: {fileID: 0}
+    - target: {fileID: -5291579620253026808, guid: 8f5109b735d9c4ca58d16ff17d9c6715, type: 3}
+      propertyPath: audioPlayables.Array.data[3].name
+      value: Dash
+      objectReference: {fileID: 0}
+    - target: {fileID: -5291579620253026808, guid: 8f5109b735d9c4ca58d16ff17d9c6715, type: 3}
+      propertyPath: audioPlayables.Array.data[2].trigger
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -5291579620253026808, guid: 8f5109b735d9c4ca58d16ff17d9c6715, type: 3}
+      propertyPath: audioPlayables.Array.data[3].trigger
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: -5291579620253026808, guid: 8f5109b735d9c4ca58d16ff17d9c6715, type: 3}
+      propertyPath: audioPlayables.Array.data[2].soundClip
+      value: 
+      objectReference: {fileID: 8300000, guid: cf299e9719a944f73b3013b88d9982ab, type: 3}
+    - target: {fileID: -5291579620253026808, guid: 8f5109b735d9c4ca58d16ff17d9c6715, type: 3}
+      propertyPath: audioPlayables.Array.data[3].soundClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 1166512d0519c4649af8fd7fdf435489, type: 3}
     - target: {fileID: 1044593275758110812, guid: 8f5109b735d9c4ca58d16ff17d9c6715, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -19877,6 +19913,10 @@ PrefabInstance:
     - target: {fileID: 9029120374915352687, guid: 8f5109b735d9c4ca58d16ff17d9c6715, type: 3}
       propertyPath: m_Name
       value: SoundAndMusic
+      objectReference: {fileID: 0}
+    - target: {fileID: 9029120374915352687, guid: 8f5109b735d9c4ca58d16ff17d9c6715, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
