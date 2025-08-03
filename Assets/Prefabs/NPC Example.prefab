@@ -92,6 +92,12 @@ MonoBehaviour:
 '
     showAsFoldout: 1
     foldoutOpenByDefault: 0
+  makeSpeechSound: 1
+  speakDelay: 0.175
+  speakDelayVariance: 0.75
+  speakPitchMinMax: {x: 0.5, y: 2}
+  charsPerSpeakTone: 5
+  speakAudioTrigger: 5
 --- !u!212 &7767614151380971934
 SpriteRenderer:
   m_ObjectHideFlags: 0

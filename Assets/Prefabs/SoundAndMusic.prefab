@@ -129,3 +129,12 @@ MonoBehaviour:
     pitch: 100
     loop: 0
     playOnStart: 0
+  - name: Speak
+    trigger: 5
+    soundClip: {fileID: 8300000, guid: 3796a563b3813435d98f76e6b0e46365, type: 3}
+    hasAlreadyResetExtraOptions: 1
+    showExtraOptions: 0
+    volume: 100
+    pitch: 100
+    loop: 0
+    playOnStart: 0

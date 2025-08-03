@@ -8,7 +8,7 @@ using UnityEngine.Serialization;
 using XnTools;
 
 // To make a new eAudioTrigger, just add it to the enum declaration below. - JGB
-public enum eAudioTrigger { music, jump, land, dash, pickup };
+public enum eAudioTrigger { music, jump, land, dash, pickup, speak };
 
 public class SoundAndMusic : MonoBehaviour {
     // This is a private Singleton (see http://gameprogrammingpatterns.com - JGB 2025-08-03
@@ -70,13 +70,13 @@ public class SoundAndMusic : MonoBehaviour {
     }
 
 
-    static public void Play( eAudioTrigger trigger ) {
+    static public void Play( eAudioTrigger trigger, float pitchMultiplier = 1f ) {
         if ( !PlayablesDict.ContainsKey( trigger ) ) {
             Debug.LogWarning( $"SoundAndMusic.Play({trigger}) called, but no AudioPlayable with that trigger is set up.");
             return;
         }
         AudioPlayable aP = PlayablesDict[trigger];
-        aP.Play();
+        aP.Play(pitchMultiplier);
     }
 
     
@@ -115,13 +115,13 @@ public class SoundAndMusic : MonoBehaviour {
             hasAlreadyResetExtraOptions = true;
         }
 
-        public void Play() {
+        public void Play(float pitchMultiplier = 1f) {
             if ( source == null ) {
                 Debug.LogWarning($"Play called on AudioPlayable {trigger}, but no source was available to play the sound.");
                 return;
             }
             ResetExtraOptionsIfNeeded();
-            source.pitch = pitch * 0.01f;
+            source.pitch = pitch * pitchMultiplier * 0.01f;
             source.volume = volume * 0.01f;
             source.resource = soundClip;
             source.loop = loop;
