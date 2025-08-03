@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1044593275758110812}
+  - component: {fileID: 4619581642453095567}
   - component: {fileID: -5291579620253026808}
   m_Layer: 0
   m_Name: SoundAndMusic
@@ -32,6 +33,41 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4619581642453095567
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9029120374915352687}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 295b97bf39e6c45ada98acdb0f6b219a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  icon: {fileID: 0}
+  title: Using the SoundAndMusic Component
+  text: '1. Add any audio clips you want to the Project''s <b>Sounds and Music</b>
+    folder as .wav, .mp3, or .ogg files.
+
+
+    2. Open <b>Audio Playables</b> below
+    to add them to the game.
+
+
+    3. If you wish to make any more audio triggers,
+    you need to add them to the eAudioTrigger enum declaration at the top of the
+    SoundAndMusic.cs script.
+
+
+    4. On each Audio Playable, check <b>Show Extra
+    Options</b> to set volume, pitch, looping, etc.\n\t<i>Note: The options still
+    work, even if they are not shown in the Inspector.</i>
+
+
+    5. For examples
+    of how to call <b>SoundAndMusic.Play()</b> in code, search for it in the Movement
+    and Collision scripts.'
 --- !u!114 &-5291579620253026808
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -52,7 +88,8 @@ MonoBehaviour:
       need to add them to the eAudioTrigger enum declaration at the top of the SoundAndMusic.cs
       script.\n4. On each Audio Playable, check <b>Show Extra Options</b> to set
       volume, pitch, looping, etc.\n\t<i>Note: The options still work, even if they
-      are not shown in the Inspector.</i>\n\n"
+      are not shown in the Inspector.</i>\n5. For examples of how to call SoundAndMusic.Play()
+      in code, search for it in the Movement.cs and Collision.cs scripts.\n\n"
     showAsFoldout: 1
     foldoutOpenByDefault: 0
   audioPlayables:
