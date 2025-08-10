@@ -66,8 +66,12 @@ public class BoundsCamera : MonoBehaviour {
         if (currColld == null || !currColld.bounds.Contains(tPos)) {
             // Find the Collider that the target IS within - JB
             currColld = null;
+            
 
             foreach (Collider2D colld in camBounds) {
+                // Make sure that the tPos.z is within the bounds z. - JGB 2025-08-11
+                //  This was originally written with 3D Colliders, so I didn't think about that.
+                tPos.z = colld.bounds.center.z;
                 if (colld.bounds.Contains(tPos)) {
                     // If we find a collider, then set currColld and break out of the foreach loop – JB
                     currColld = colld;
